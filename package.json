@@ -1,0 +1,1 @@
+{"description":"粘贴代码,30 秒出逐项验收报告。确定性检查本地算出,模型判断单独列出、不编造。纯静态页。","name":"ai-code-acceptance","private":true,"scripts":{"test":"node test/checker.test.js"},"version":"1.0.0"}

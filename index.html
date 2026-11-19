@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 代码验收报告 - 粘贴代码,30 秒出逐项验收报告</title>
+<meta name="description" content="粘贴代码,30 秒出逐项验收报告。确定性检查由代码本身算出,模型判断单独列出、绝不编造。纯静态页,代码不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>AI 代码验收报告</h1>
+    <p class="subtitle">粘贴代码,30 秒出逐项验收报告。代码算的和模型判的分开写清:确定性检查本地算出,模型判断需另行交给 AI 模型,本页不生成、不编造。</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel input-panel">
+    <div class="panel-head">
+      <h2>1. 粘贴代码</h2>
+      <span class="meta" id="inputMeta">0 行 · 0 字符</span>
+    </div>
+    <textarea id="codeInput" rows="16" spellcheck="false" placeholder="把要验收的代码粘贴到这里,支持 JavaScript / TypeScript / Python / Java / Go / Rust / C++ / JSON 等。代码只在你的浏览器里运行,不会上传到任何服务器。"></textarea>
+    <div class="sample-row">
+      <span class="sample-label">试一试:</span>
+      <button class="btn btn-ghost" data-sample="js">JS 示例</button>
+      <button class="btn btn-ghost" data-sample="python">Python 示例</button>
+      <button class="btn btn-ghost" data-sample="bad">问题示例</button>
+      <button class="btn btn-ghost" data-sample="json">JSON 示例</button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary" id="runBtn">开始验收</button>
+      <button class="btn" id="clearBtn">清空</button>
+      <span class="hint" id="langHint">语言:未检测</span>
+    </div>
+  </section>
+
+  <section class="panel report-panel" id="reportPanel" hidden>
+    <div class="panel-head">
+      <h2>2. 验收报告</h2>
+      <span class="meta" id="reportMeta"></span>
+    </div>
+
+    <div class="score-card">
+      <div class="score-num"><span id="scoreNum">--</span><span class="score-unit">分</span></div>
+      <div class="score-info">
+        <div class="grade" id="gradeBadge">-</div>
+        <div class="score-sub" id="scoreSub"></div>
+        <div class="counts" id="countsRow"></div>
+      </div>
+    </div>
+
+    <div class="metrics" id="metricsGrid"></div>
+
+    <h3 class="section-title">确定性检查 <span class="tag tag-computed">代码算的</span></h3>
+    <p class="section-note">以下每一项都由代码本身算出,带行号与证据,可复核。</p>
+    <ul class="check-list" id="checkList"></ul>
+
+    <h3 class="section-title">模型判断 <span class="tag tag-model">需 AI 模型,本页未判定</span></h3>
+    <p class="section-note">这六项需要理解代码意图才能判断,静态页不调用模型,所以只列清单、不给结论。点下面按钮可复制一份带代码与确定性结果的提示词,粘贴给任意 AI 模型继续评审。</p>
+    <ul class="model-list" id="modelList"></ul>
+    <div class="action-row">
+      <button class="btn" id="copyPromptBtn">复制给 AI 的提示词</button>
+    </div>
+
+    <h3 class="section-title">导出报告</h3>
+    <div class="action-row">
+      <button class="btn btn-primary" id="copyMdBtn">复制报告 (Markdown)</button>
+      <button class="btn" id="downloadBtn">下载报告 (.md)</button>
+    </div>
+  </section>
+
+  <p class="toast" id="toast" hidden></p>
+
+  <section class="panel about-panel">
+    <h2>这份报告怎么算的</h2>
+    <ul class="about-list">
+      <li><strong>确定性检查(19 项通用,JSON 另有专项 1 项):</strong>括号配对、字符串与注释闭合、JSON 合法性(仅 JSON 代码)、行长度、行尾空白、缩进一致性、待办标记、调试残留、空异常处理、危险调用(eval/innerHTML)、硬编码密钥、相等比较写法、圈复杂度(估算)、函数长度、重复代码行、魔法数字、注释占比、文件末尾换行、SQL 字符串拼接、文件规模。全部本地计算,带行号证据。</li>
+      <li><strong>模型判断(6 项):</strong>命名、逻辑正确性、结构性重复、性能隐患、可读性、项目约定。需要模型理解意图,本页不调用模型、不编造结论。</li>
+      <li><strong>评分:</strong>满分 100,不通过扣 10 分,警告扣 4 分;90 分以上 A,75 分以上 B,60 分以上 C,其余 D。评分只反映确定性检查结果。</li>
+      <li><strong>隐私:</strong>纯静态页面,无后端、无统计,代码只在你的浏览器里运行,关闭页面即消失。</li>
+      <li><strong>局限:</strong>圈复杂度与函数长度为估算(按定义行切分);模板字符串里的 ${} 代码不参与括号检查;语言识别为启发式,小段代码可能识别为"未知",不影响检查本身。</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>AI 代码验收报告 v1.0.0 · 静态页,本地运行 · 确定性检查与模型判断分开写清</p>
+  </div>
+</footer>
+
+<script src="checker.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
